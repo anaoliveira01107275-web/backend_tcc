@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { prisma } from "../config/prisma";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
 import { handleError } from "../helpers/handleError";
 
 export default {
@@ -32,6 +34,54 @@ export default {
             });
 
             return response.json(usuario);
+
+        } catch (error: any) {
+
+            return handleError(response, error);
+
+        }
+
+    },
+
+    login: async (request: Request, response: Response) => {
+
+        try {
+
+            const { email, senha } = request.body;
+
+            const usuario = await prisma.user.findUnique({
+                where: {
+                    email
+                }
+            });
+
+            if (!usuario) {
+                throw new Error("Email ou senha inválidos");
+            }
+
+            const senhaCorreta = await bcrypt.compare(
+                senha,
+                usuario.senha
+            );
+
+            if (!senhaCorreta) {
+                throw new Error("Email ou senha inválidos");
+            }
+
+            const token = jwt.sign(
+                {
+                    id: usuario.id
+                },
+                "SEGREDO_JWT",
+                {
+                    expiresIn: "7d"
+                }
+            );
+
+            return response.json({
+                usuario,
+                token
+            });
 
         } catch (error: any) {
 

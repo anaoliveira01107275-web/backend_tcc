@@ -13,6 +13,13 @@ routes.post(
 );
 
 routes.post(
+    "/login",
+    loginController.login
+);
+
+
+
+routes.post(
     "/produtos",
     authentication,
     produtosController.create
@@ -21,6 +28,18 @@ routes.post(
 routes.get(
     "/produtos",
     produtosController.list
+);
+
+routes.put(
+    "/produtos/:id",
+    authentication,
+    produtosController.update
+);
+
+routes.delete(
+    "/produtos/:id",
+    authentication,
+    produtosController.delete
 );
 
 export default routes;
