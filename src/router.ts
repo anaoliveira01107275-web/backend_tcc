@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import loginController from "./controllers/login";
 import produtosController from "./controllers/produtos";
+import { upload } from "./config/multer";
 
 import { authentication } from "./middlewares/authentication";
 
@@ -41,5 +42,24 @@ routes.delete(
     authentication,
     produtosController.delete
 );
+
+routes.get(
+    "/meus-produtos",
+    authentication,
+    produtosController.myProducts
+);
+
+routes.post(
+    "/upload",
+    upload.single("file"),
+    (request, response) => {
+
+        return response.json({
+            image: request.file?.filename
+        });
+
+    }
+);
+
 
 export default routes;

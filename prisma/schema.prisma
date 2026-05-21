@@ -24,4 +24,5 @@ model Produto {
   userId      Int
   usuario     User     @relation(fields: [userId], references: [id])
   createdAt   DateTime @default(now())
+  
 }
