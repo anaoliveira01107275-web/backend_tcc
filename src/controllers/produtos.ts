@@ -159,6 +159,29 @@ export default {
 
     }
 
-}
+},
+
+
+show: async (request: Request, response: Response) => {
+
+    try {
+
+        const { id } = request.params;
+
+        const produto = await prisma.produto.findUnique({
+            where: {
+                id: Number(id)
+            }
+        });
+
+        return response.json(produto);
+
+    } catch (error) {
+
+        return handleError(error, response);
+
+    }
+
+},
 
 }

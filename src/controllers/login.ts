@@ -89,6 +89,28 @@ export default {
 
         }
 
+    },
+
+    me: async (request: Request, response: Response) => {
+
+    try {
+
+        const user = await prisma.user.findUnique({
+            where: {
+                id: request.userId
+            }
+        });
+
+        return response.json(user);
+
+    } catch (error: any) {
+
+        return response.status(400).json({
+            error: error.message
+        });
+
     }
+
+}
 
 }

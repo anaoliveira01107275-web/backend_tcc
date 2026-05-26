@@ -61,5 +61,16 @@ routes.post(
     }
 );
 
+routes.get(
+    "/produtos/:id",
+    produtosController.show
+);
+
+routes.get(
+    "/me",
+    authentication,
+    loginController.me
+);
+
 
 export default routes;
